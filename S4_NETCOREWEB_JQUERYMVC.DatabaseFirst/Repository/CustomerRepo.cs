@@ -19,7 +19,7 @@ namespace S4_NETCOREWEB_JQUERYMVC.DatabaseFirst.Repository
         public static async Task<IEnumerable<Customer>> GetCustomersAsync()
         {
             using var data = new Sales2021Context();
-            return await data.Customer.ToListAsync();
+            return await data.Customer.Include(x=>x.Order).ToListAsync();
         }
 
         public static Customer GetCustomerById(int id)

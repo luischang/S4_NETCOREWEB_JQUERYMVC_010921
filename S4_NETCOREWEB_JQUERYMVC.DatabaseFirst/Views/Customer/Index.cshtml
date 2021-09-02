@@ -78,10 +78,107 @@
 </div>
 
 <script>
+
+     $("#divListadoClientes").on("click", ".btnEditarCliente", function () {
+        let vIdCliente = $(this).attr("data-id");
+        $("#hidCliente").val(vIdCliente);
+         let modalRegistro = $("#modalRegistroCliente");
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("Obtener","Customer")',
+                cache: false,
+                data: {
+                    idCliente: vIdCliente
+                },
+                success: function (objCliente) {
+                    $("#txtNombres").val(objCliente.firstName);
+                    $("#txtApellidos").val(objCliente.lastName);
+                    $("#txtPais").val(objCliente.country);
+                    $("#txtCiudad").val(objCliente.city);
+                    $("#txtTelefono").val(objCliente.phone);
+                    modalRegistro.modal();
+
+                }
+            });
+
+    });
+
+    $("#divListadoClientes").on("click", ".btnEliminarCliente", function () {
+        let vIdCliente = $(this).attr("data-id");
+        if (confirm("¿Estás seguro de eliminar al cliente?")) {
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Eliminar","Customer")',
+                cache: false,
+                data: {
+                    idCliente: vIdCliente
+                },
+                success: function (exito) {
+                    if (exito) {
+                        alert("Se eliminó correctamente!");
+                        CargarListadoCliente();
+                    } else {
+                        alert("Ocurrió un error al eliminar el cliente");
+                    }
+                }
+            });
+        }
+    });
+
+
+
+   function LimpiarControles() {
+       $("#txtNombres").val("");
+       $("#txtApellidos").val("");
+       $("#txtPais").val("");
+       $("#txtCiudad").val("");
+       $("#txtTelefono").val("");
+       $("#hidCliente").val(-1);
+   }
+
     $("#btnAgregarCliente").click(function () {
         $("#modalRegistroCliente").modal();
     });
 
+    $("#btnGrabarCliente").click(function () {
+        let vNombres = $("#txtNombres").val();
+        let vApellidos = $("#txtApellidos").val();
+        let vPais = $("#txtPais").val();
+        let vCiudad = $("#txtCiudad").val();
+        let vTelefono = $("#txtTelefono").val();
+        let vIdCliente = $("#hidCliente").val();
+
+        //let vCliente = {
+        //    idCliente: vIdCliente,
+        //    param2: "",
+        //    param3:""
+        //}
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Grabar","Customer")',
+            cache: false,
+            data: {
+                idCliente: vIdCliente,
+                nombres: vNombres,
+                apellidos: vApellidos,
+                pais: vPais,
+                ciudad: vCiudad,
+                telefono: vTelefono
+            },
+            success: function (exito) {
+                if (exito) {
+                    alert("Se registró correctamente!");
+                    CargarListadoCliente();
+                    LimpiarControles();
+                    $("#modalRegistroCliente").modal("toggle");
+                }
+
+            }
+        });
+    });
 
 
     CargarListadoCliente();

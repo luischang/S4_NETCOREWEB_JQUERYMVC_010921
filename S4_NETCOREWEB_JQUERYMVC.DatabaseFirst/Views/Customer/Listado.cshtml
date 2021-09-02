@@ -10,6 +10,7 @@
             <th>Ciudad</th>
             <th>País</th>
             <th>Teléfono</th>
+            <th>#Ordenes</th>
             <th></th>
         </tr>
     </thead>
@@ -23,6 +24,7 @@
                 <td>@item.City</td>
                 <td>@item.Country</td>
                 <td>@item.Phone</td>
+                <td>@item.Order.Count()</td>
                 <td>
                     <button data-id="@item.Id" class="btn btn-warning btnEditarCliente">Editar</button>
                     <button data-id="@item.Id" class="btn btn-danger btnEliminarCliente">Eliminar</button>
@@ -32,3 +34,21 @@
 
     </tbody>
 </table>
+
+<script>
+    LoadTable();
+    function LoadTable() {
+        let table = $("#tbClientes").DataTable({
+            lengthChange: false,
+            buttons: ['copy','excel','pdf','colvis','print']
+
+        });
+
+        table.buttons().container()
+            .insertBefore("#tbClientes_filter");
+    }
+
+
+
+    /*$("#tbClientes").DataTable();*/
+</script>
