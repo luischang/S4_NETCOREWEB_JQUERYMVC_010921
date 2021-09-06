@@ -117,10 +117,10 @@
                 },
                 success: function (exito) {
                     if (exito) {
-                        alert("Se eliminó correctamente!");
+                        swal("Se eliminó correctamente!");
                         CargarListadoCliente();
                     } else {
-                        alert("Ocurrió un error al eliminar el cliente");
+                        swal("Ocurrió un error al eliminar el cliente");
                     }
                 }
             });
@@ -170,7 +170,7 @@
             },
             success: function (exito) {
                 if (exito) {
-                    alert("Se registró correctamente!");
+                    swal("Se registró correctamente!");
                     CargarListadoCliente();
                     LimpiarControles();
                     $("#modalRegistroCliente").modal("toggle");
